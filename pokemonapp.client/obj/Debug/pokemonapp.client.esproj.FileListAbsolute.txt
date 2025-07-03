@@ -1,1 +1,0 @@
-C:\pokemon-viewer\PokemonApp\pokemonapp.client\obj\Debug\pokemonapp.client.esproj.CoreCompileInputs.cache
