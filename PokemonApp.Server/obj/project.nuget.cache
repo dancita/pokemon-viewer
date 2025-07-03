@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "P06uzdjqW5A=",
+  "success": true,
+  "projectFilePath": "C:\\pokemon-viewer\\PokemonApp\\PokemonApp.Server\\PokemonApp.Server.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\daniellap\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\8.0.17\\microsoft.aspnetcore.spaproxy.8.0.17.nupkg.sha512"
+  ],
+  "logs": []
+}
