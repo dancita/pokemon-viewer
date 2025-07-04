@@ -1,7 +1,6 @@
 <template>
-    <div class="weather-component">
-        <h1>Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
+    <div class="pokemon-component">
+        <h1>Pokemon Viewer</h1>
 
         <div v-if="loading" class="loading">
             Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationvue">https://aka.ms/jspsintegrationvue</a> for more details.
@@ -10,20 +9,40 @@
         <div v-if="post" class="content">
             <table>
                 <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
-                    </tr>
+                  <tr>
+                    <th>Name</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Types</th>
+                    <th>Abilities</th>
+                  </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="forecast in post" :key="forecast.date">
-                        <td>{{ forecast.date }}</td>
-                        <td>{{ forecast.temperatureC }}</td>
-                        <td>{{ forecast.temperatureF }}</td>
-                        <td>{{ forecast.summary }}</td>
-                    </tr>
+                  <tr v-if="post">
+                    <td>{{ post.name }}</td>
+                    <td>{{ post.height }}</td>
+                    <td>{{ post.weight }}</td>
+                    <td>
+                      <div v-for="t in post.types" :key="t.slot" class="type-pill">
+                        <strong>Slot:</strong> {{ t.slot }} <br/>
+                        <strong>Name:</strong> {{ t.type.name }} <br/>
+                        <a :href="t.type.url" target="_blank" rel="noopener noreferrer">
+                          Url
+                        </a>
+                        <hr />
+                      </div>
+                      </td>
+                      <td>
+                      <div v-for="t in post.abilities" :key="t.slot" class="type-pill">
+                        <strong>IsHidden: </strong> {{ t.is_hidden ? 'Yes' : 'No' }} <br/>
+                        <strong>Slot: </strong> {{ t.slot }} <br />
+                        <strong>Ability: </strong> {{ t.ability.name }} <br/>
+                        <a :href="t.ability.url" target="_blank" rel="noopener noreferrer">
+                          Url
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
                 </tbody>
             </table>
         </div>
@@ -41,8 +60,6 @@
             };
         },
         async created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
             await this.fetchData();
         },
         watch: {
@@ -54,9 +71,11 @@
                 this.post = null;
                 this.loading = true;
 
-                var response = await fetch('weatherforecast');
-                if (response.ok) {
-                    this.post = await response.json();
+            var response = await fetch('https://localhost:7222/api/pokemon/pikachu');
+            if (response.ok) {
+             
+              this.post = await response.json();
+              console.log("post", this.post);
                     this.loading = false;
                 }
             }
@@ -74,12 +93,18 @@ th, td {
     padding-right: .5rem;
 }
 
-.weather-component {
+.pokemon-component {
     text-align: center;
 }
 
 table {
     margin-left: auto;
     margin-right: auto;
+}
+
+.type-pill {
+  display: inline-block;
+  background-color: #e0e0e0;
+  color: #333;
 }
 </style>

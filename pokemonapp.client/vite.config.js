@@ -47,7 +47,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/weatherforecast': {
+            '^/pokemon': {
                 target: 'https://localhost:55481',
                 secure: false
             }
