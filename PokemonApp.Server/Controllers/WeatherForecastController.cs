@@ -1,33 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
+using PokemonApp.Server.Interfaces;
+using PokemonApp.Server.Models;
 
 namespace PokemonApp.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private readonly IPokemonInfoService _pokemonInfoService;
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(IPokemonInfoService pokemonInfoService)
         {
-            _logger = logger;
+            _pokemonInfoService = pokemonInfoService;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IActionResult> GetPokemon()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var query = "Pikachu";
+
+            if (string.IsNullOrEmpty(query))
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                return BadRequest("Query parameter is required.");
+            }
+
+            Pokemon pokemon = await _pokemonInfoService.GetPokemonAsync(query);
+
+            if (pokemon == null)
+            {
+                return NotFound("No pokemons found.");
+            }
+
+            return Ok(pokemon);
         }
     }
 }
