@@ -6,20 +6,18 @@ namespace PokemonApp.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class PokemonController : ControllerBase
     {
         private readonly IPokemonInfoService _pokemonInfoService;
 
-        public WeatherForecastController(IPokemonInfoService pokemonInfoService)
+        public PokemonController(IPokemonInfoService pokemonInfoService)
         {
             _pokemonInfoService = pokemonInfoService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetPokemon()
+        [HttpGet("{query}")]
+        public async Task<IActionResult> GetPokemon(string query)
         {
-            var query = "Pikachu";
-
             if (string.IsNullOrEmpty(query))
             {
                 return BadRequest("Query parameter is required.");
