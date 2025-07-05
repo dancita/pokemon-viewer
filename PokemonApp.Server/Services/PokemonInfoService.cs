@@ -7,11 +7,21 @@ namespace PokemonApp.Server.Services
 {
     public class PokemonInfoService : IPokemonInfoService
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IConfiguration _configuration;
+
+        public PokemonInfoService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        {
+            _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
+        }
+
         public async Task<Pokemon> GetPokemonAsync(string identifier)
         {
-            var url = $"https://pokeapi.co/api/v2/pokemon/{identifier}";
+            string? _baseUrl = _configuration["PokemonApi:BaseUrl"];
+            var url = $"{_baseUrl}/{identifier}";
 
-            HttpClient client = new HttpClient();
+            var client = _httpClientFactory.CreateClient("HttpClient");
             client.BaseAddress = new Uri(url);
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 

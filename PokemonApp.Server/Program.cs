@@ -5,6 +5,7 @@ using PokemonApp.Server.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpClient("httpClient");
 builder.Services.AddScoped<IPokemonInfoService, PokemonInfoService>();
 
 builder.Services.AddControllers();
