@@ -1,4 +1,5 @@
 using PokemonApp.Server.Interfaces;
+using PokemonApp.Server.Middleware;
 using PokemonApp.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

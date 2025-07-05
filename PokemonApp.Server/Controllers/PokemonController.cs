@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using PokemonApp.Server.Interfaces;
-using PokemonApp.Server.Models;
 
 namespace PokemonApp.Server.Controllers
 {
@@ -18,17 +17,7 @@ namespace PokemonApp.Server.Controllers
         [HttpGet("{query}")]
         public async Task<IActionResult> GetPokemon(string query)
         {
-            if (string.IsNullOrEmpty(query))
-            {
-                return BadRequest("Query parameter is required.");
-            }
-
-            Pokemon pokemon = await _pokemonInfoService.GetPokemonAsync(query);
-
-            if (pokemon == null)
-            {
-                return NotFound("No pokemons found.");
-            }
+            var pokemon = await _pokemonInfoService.GetPokemonAsync(query);
 
             return Ok(pokemon);
         }

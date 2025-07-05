@@ -23,5 +23,14 @@ namespace PokemonApp.Server.Models
 
         [JsonProperty("types")]
         public List<PokemonType> Types { get; set; }
+
+        [JsonProperty("sprites")]
+        public PokemonSprites Sprites { get; set; }
+    }
+
+    public class PokemonSprites
+    {
+        [JsonProperty("front_default")]
+        public string FrontDefaultImage { get; set; }
     }
 }

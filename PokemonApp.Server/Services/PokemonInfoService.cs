@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PokemonApp.Server.Exceptions;
 using PokemonApp.Server.Interfaces;
 using PokemonApp.Server.Models;
 
@@ -15,13 +16,13 @@ namespace PokemonApp.Server.Services
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
             HttpResponseMessage httpResponseMessage = await client.GetAsync(url).ConfigureAwait(false);
-
-            httpResponseMessage.EnsureSuccessStatusCode();
-
+                
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new PokemonInfoException(httpResponseMessage.StatusCode);
+            }
             var jsonString = await httpResponseMessage.Content.ReadAsStringAsync();
-            var pokemon = JsonConvert.DeserializeObject<Pokemon>(jsonString);
-
-            return pokemon;
+            return JsonConvert.DeserializeObject<Pokemon>(jsonString);
         }
     }
 }
