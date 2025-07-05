@@ -1,5 +1,5 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import PokemonViewer from './components/PokemonViewer.vue'
 </script>
 
 <template>
@@ -7,7 +7,7 @@ import HelloWorld from './components/HelloWorld.vue'
     <img alt="Vue logo" class="logo" src="./assets/logo.png" width="500" height="300" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <PokemonViewer/>
     </div>
   </header>
 
