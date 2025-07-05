@@ -7,9 +7,9 @@ namespace PokemonApp.Server.Services
 {
     public class PokemonInfoService : IPokemonInfoService
     {
-        public async Task<Pokemon> GetPokemonAsync(string query)
+        public async Task<Pokemon> GetPokemonAsync(string identifier)
         {
-            var url = $"https://pokeapi.co/api/v2/pokemon/{query}";
+            var url = $"https://pokeapi.co/api/v2/pokemon/{identifier}";
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(url);

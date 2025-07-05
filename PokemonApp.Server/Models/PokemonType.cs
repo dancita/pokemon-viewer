@@ -9,6 +9,6 @@ namespace PokemonApp.Server.Models
         public int Slot { get; set; }
 
         [JsonProperty("type")]
-        public NamedAPIResource Type { get; set; }
+        public NamedAPIResource? Type { get; set; }
     }
 }

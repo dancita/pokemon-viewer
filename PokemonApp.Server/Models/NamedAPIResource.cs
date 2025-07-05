@@ -6,9 +6,9 @@ namespace PokemonApp.Server.Models
     public class NamedAPIResource
     {
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonProperty("url")]
-        public string Url { get; set; }
+        public string? Url { get; set; }
     }
 }

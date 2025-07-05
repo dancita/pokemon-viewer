@@ -10,7 +10,7 @@ namespace PokemonApp.Server.Models
         public int Id { get; set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonProperty("height")]
         public int Height { get; set; }
@@ -19,18 +19,18 @@ namespace PokemonApp.Server.Models
         public int Weight { get; set; }
 
         [JsonProperty("abilities")]
-        public List<PokemonAbility> Abilities { get; set; }
+        public List<PokemonAbility>? Abilities { get; set; }
 
         [JsonProperty("types")]
-        public List<PokemonType> Types { get; set; }
+        public List<PokemonType>? Types { get; set; }
 
         [JsonProperty("sprites")]
-        public PokemonSprites Sprites { get; set; }
+        public PokemonSprites? Sprites { get; set; }
     }
 
     public class PokemonSprites
     {
         [JsonProperty("front_default")]
-        public string FrontDefaultImage { get; set; }
+        public string? FrontDefaultImage { get; set; }
     }
 }

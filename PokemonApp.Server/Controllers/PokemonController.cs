@@ -3,6 +3,9 @@ using PokemonApp.Server.Interfaces;
 
 namespace PokemonApp.Server.Controllers
 {
+    /// <summary>
+    /// API controller that handles Pokemon operations.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class PokemonController : ControllerBase
@@ -14,10 +17,15 @@ namespace PokemonApp.Server.Controllers
             _pokemonInfoService = pokemonInfoService;
         }
 
-        [HttpGet("{query}")]
-        public async Task<IActionResult> GetPokemon(string query)
+        /// <summary>
+        /// Retrieves details of a Pokemon
+        /// </summary>
+        /// <param name="identifier">Id or name</param>
+        /// <returns>Returns Pokemon</returns>
+        [HttpGet("{identifier}")]
+        public async Task<IActionResult> GetPokemon(string identifier)
         {
-            var pokemon = await _pokemonInfoService.GetPokemonAsync(query);
+            var pokemon = await _pokemonInfoService.GetPokemonAsync(identifier);
 
             return Ok(pokemon);
         }
