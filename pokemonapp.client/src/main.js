@@ -5,6 +5,7 @@ import { createAuth0 } from '@auth0/auth0-vue'
 import App from './App.vue'
 
 const app = createApp(App);
+const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
 app.use(
   createAuth0({
@@ -12,7 +13,7 @@ app.use(
     clientId: "QGVHMPjnHPr95Dt9GLGvOn2FZmXo3gf1",
     authorizationParams: {
       redirect_uri: window.location.origin,
-      audience: "https://localhost:7222/api/pokemon/",
+      audience: `${apiUrl}`,
       scope: "read:pokemon"
     }
   })

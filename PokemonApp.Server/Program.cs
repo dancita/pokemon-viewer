@@ -6,6 +6,9 @@ using PokemonApp.Server.Middleware;
 using PokemonApp.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var auth0Settings = builder.Configuration.GetRequiredSection("Auth0");
+var authority = auth0Settings["Authority"];
+var audience = auth0Settings["Audience"];
 
 // Add services to the container.
 builder.Services.AddHttpClient("httpClient");
@@ -29,17 +32,15 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.Authority = "https://dev-ohcwl04hyco5phi8.us.auth0.com/";
-    options.Audience = "https://localhost:7222/api/pokemon/";
+    options.Authority = authority;
+    options.Audience = audience;
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("read:pokemon", policy => 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("read:pokemon", policy => 
     policy.Requirements.Add(
-        new HasScopeRequirement("read:pokemon", "https://dev-ohcwl04hyco5phi8.us.auth0.com/")
+        new HasScopeRequirement("read:pokemon", authority)
     ));
-});
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();

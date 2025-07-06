@@ -75,6 +75,8 @@
   import { useAuth0 } from '@auth0/auth0-vue';
   import { inject } from 'vue'
 
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
   export default defineComponent({
     components: {
       LogoutButton
@@ -109,11 +111,11 @@
             }
 
             const token = await this.auth0.getAccessTokenSilently({
-              audience: 'https://localhost:7222/api/pokemon/',
+              audience:`${apiUrl}`,
               scope: 'read:pokemon',
             })
 
-            const response = await fetch(`https://localhost:7222/api/pokemon/${this.inputText}`, {
+            const response = await fetch(`${apiUrl}${this.inputText}`, {
               headers: {
                  Authorization: `Bearer ${token}`
               }
