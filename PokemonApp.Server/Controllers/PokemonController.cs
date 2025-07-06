@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PokemonApp.Server.Interfaces;
 
@@ -23,6 +24,7 @@ namespace PokemonApp.Server.Controllers
         /// <param name="identifier">Id or name</param>
         /// <returns>Returns Pokemon</returns>
         [HttpGet("{identifier}")]
+        [Authorize(Policy = "read:pokemon")]
         public async Task<IActionResult> GetPokemon(string identifier)
         {
             var pokemon = await _pokemonInfoService.GetPokemonAsync(identifier);

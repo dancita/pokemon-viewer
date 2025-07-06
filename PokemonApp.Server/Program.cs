@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using PokemonApp.Server.Authorization;
 using PokemonApp.Server.Interfaces;
 using PokemonApp.Server.Middleware;
 using PokemonApp.Server.Services;
@@ -8,17 +11,48 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient("httpClient");
 builder.Services.AddScoped<IPokemonInfoService, PokemonInfoService>();
 
-builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins("https://localhost:55481")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+    options.AddPolicy("AllowSpecificOrigin",
+            builder =>
+            {
+                builder
+                .WithOrigins("http://localhost:7222")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+            }
+    );
+    //options.AddPolicy("AllowFrontend", policy =>
+    //{
+    //    policy.WithOrigins("https://localhost:55481")
+    //          .AllowAnyHeader()
+    //          .AllowAnyMethod();
+    //});
 });
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.Authority = "https://dev-ohcwl04hyco5phi8.us.auth0.com/";
+    options.Audience = "https://localhost:7222/api/pokemon/";
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("read:pokemon", policy => 
+    policy.Requirements.Add(
+        new HasScopeRequirement("read:pokemon", "https://dev-ohcwl04hyco5phi8.us.auth0.com/")
+    ));
+});
+
+builder.Services.AddControllers();
+builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
 var app = builder.Build();
 
@@ -33,7 +67,9 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors("AllowFrontend");
+app.UseCors("AllowSpecificOrigin");
+//app.UseCors("AllowFrontend");
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
