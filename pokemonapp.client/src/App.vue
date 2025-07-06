@@ -1,19 +1,35 @@
 <script setup>
-import PokemonViewer from './components/PokemonViewer.vue'
+  import PokemonViewer from './components/PokemonViewer.vue';
+  import { useAuth0 } from '@auth0/auth0-vue';
+  import LoginButton from './components/LoginButton.vue';
+
+  const { loginWithRedirect, logout, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.png" width="500" height="300" />
-
-    <div class="wrapper">
-      <PokemonViewer/>
+    <img alt="Pokemon logo" class="logo" src="./assets/logo.png" width="500" height="300" />
+    <div v-if="!isAuthenticated">
+      <LoginButton/>
+    </div>
+    <div v-else class="wrapper">
+      <PokemonViewer />
     </div>
   </header>
-
 </template>
 
 <style scoped>
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
 header {
   line-height: 1.5;
 }

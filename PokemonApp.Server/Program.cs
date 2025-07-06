@@ -11,25 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient("httpClient");
 builder.Services.AddScoped<IPokemonInfoService, PokemonInfoService>();
 
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
-            builder =>
-            {
-                builder
-                .WithOrigins("http://localhost:7222")
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials();
-            }
-    );
-    //options.AddPolicy("AllowFrontend", policy =>
-    //{
-    //    policy.WithOrigins("https://localhost:55481")
-    //          .AllowAnyHeader()
-    //          .AllowAnyMethod();
-    //});
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("https://localhost:55481")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
 });
 
 builder.Services.AddAuthentication(options =>
@@ -67,8 +57,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors("AllowSpecificOrigin");
-//app.UseCors("AllowFrontend");
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 

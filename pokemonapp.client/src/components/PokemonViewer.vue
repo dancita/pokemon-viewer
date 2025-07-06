@@ -1,5 +1,6 @@
 <template>
   <div class="pokemon-component">
+    <LogoutButton/>
     <h1>Pokemon Viewer</h1>
     <div>
       <input id="pokemonQuery" name="pokemonQuery" v-model="inputText" type="text" placeholder="Enter a name or id" />
@@ -70,15 +71,25 @@
 
 <script lang="js">
   import { defineComponent } from 'vue';
+  import LogoutButton from './LogoutButton.vue';
+  import { useAuth0 } from '@auth0/auth0-vue';
+  import { inject } from 'vue'
 
   export default defineComponent({
+    components: {
+      LogoutButton
+    },
     data() {
       return {
         loading: false,
         post: null,
         inputText: '',
         errorMessage: ''
-      };
+      }
+    },
+    setup(){
+      const auth0 = useAuth0()
+      return { auth0 }
     },
     watch: {
       // call again the method if the route changes
@@ -88,9 +99,25 @@
       async fetchData() {
         this.post = null;
         this.loading = true;
-
+        
         try {
-          var response = await fetch(`https://localhost:7222/api/pokemon/${this.inputText}`);
+            const auth0 = useAuth0();
+
+            if (!this.auth0.isAuthenticated) {
+              this.error = 'User not authenticated'
+              return
+            }
+
+            const token = await this.auth0.getAccessTokenSilently({
+              audience: 'https://localhost:7222/api/pokemon/',
+              scope: 'read:pokemon',
+            })
+
+            const response = await fetch(`https://localhost:7222/api/pokemon/${this.inputText}`, {
+              headers: {
+                 Authorization: `Bearer ${token}`
+              }
+            });
 
           if (!response.ok) {
             const { message } = await response.json();
