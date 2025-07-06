@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PokemonApp.Server.Extensions;
 using PokemonApp.Server.Interfaces;
 
 namespace PokemonApp.Server.Controllers
@@ -27,6 +28,15 @@ namespace PokemonApp.Server.Controllers
         [Authorize(Policy = "read:pokemon")]
         public async Task<IActionResult> GetPokemon(string identifier)
         {
+            if (!identifier.IsValidFormat())
+            {
+                return BadRequest("Only letters, numbers and hyphens are allowed.");
+            }
+            if (!identifier.IsValidLength())
+            {
+                return BadRequest("Maximum 12 characters are allowed.");
+            }
+
             var pokemon = await _pokemonInfoService.GetPokemonAsync(identifier);
 
             return Ok(pokemon);

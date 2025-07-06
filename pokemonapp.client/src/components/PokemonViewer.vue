@@ -137,10 +137,15 @@
       },
       handleClick() {
         var validInput = /^[A-Za-z0-9]+$/.test(this.inputText);
+        const maxLength = 12;
         if (!validInput){
           this.errorMessage = "Only numbers and letters allowed."
           return;
         }
+        if (this.inputText.length > maxLength) {{
+          this.errorMessage = "Maximum 12 characters are allowed."
+          return;
+        }}
         this.errorMessage = "";
         this.fetchData();        
       }
