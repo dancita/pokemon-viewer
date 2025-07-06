@@ -75,7 +75,7 @@
   import { useAuth0 } from '@auth0/auth0-vue';
   import { inject } from 'vue'
 
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const apiUrl = import.meta.env.VITE_API_BASE_POKEMON_URL;
 
   export default defineComponent({
     components: {
