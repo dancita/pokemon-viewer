@@ -1,9 +1,9 @@
-﻿using PokemonApp.Server.Models;
+﻿using PokemonApp.Server.Models.PokemonResponses;
 
 namespace PokemonApp.Server.Interfaces
 {
     public interface IPokemonInfoService
     {
-        Task<Pokemon> GetPokemonAsync(string query);
+        Task<PokemonResponse> GetPokemonAsync(string query);
     }
 }

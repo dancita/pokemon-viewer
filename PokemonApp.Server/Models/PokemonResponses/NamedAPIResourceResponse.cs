@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 
-namespace PokemonApp.Server.Models
+namespace PokemonApp.Server.Models.PokemonResponses
 {
     [Serializable]
-    public class NamedAPIResource
+    public class NamedAPIResourceResponse
     {
         [JsonProperty("name")]
         public string? Name { get; set; }

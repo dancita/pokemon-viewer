@@ -1,17 +1,17 @@
-﻿using Newtonsoft.Json;
-
-namespace PokemonApp.Server.Models
+﻿namespace PokemonApp.Server.Models
 {
-    [Serializable]
     public class PokemonAbility
     {
-        [JsonProperty("is_hidden")]
-        public bool IsHidden { get; set; }
+        public int PokemonId { get; set; }
 
-        [JsonProperty("slot")]
+        public int AbilityId { get; set; }
+
         public int Slot { get; set; }
 
-        [JsonProperty("ability")]
-        public NamedAPIResource? Ability { get; set; }
+        public bool IsHidden { get; set; }
+
+        public Pokemon Pokemon { get; set; } = null!;
+
+        public Ability Ability { get; set; } = null!;
     }
 }

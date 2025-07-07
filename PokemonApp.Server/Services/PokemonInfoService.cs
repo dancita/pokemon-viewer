@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PokemonApp.Server.Exceptions;
 using PokemonApp.Server.Interfaces;
-using PokemonApp.Server.Models;
+using PokemonApp.Server.Models.PokemonResponses;
 
 namespace PokemonApp.Server.Services
 {
@@ -16,7 +16,7 @@ namespace PokemonApp.Server.Services
             _configuration = configuration;
         }
 
-        public async Task<Pokemon> GetPokemonAsync(string identifier)
+        public async Task<PokemonResponse> GetPokemonAsync(string identifier)
         {
             string? _baseUrl = _configuration["PokemonApi:BaseUrl"];
             var url = $"{_baseUrl}/{identifier}";
@@ -32,7 +32,7 @@ namespace PokemonApp.Server.Services
                 throw new PokemonInfoException(httpResponseMessage.StatusCode);
             }
             var jsonString = await httpResponseMessage.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<Pokemon>(jsonString);
+            return JsonConvert.DeserializeObject<PokemonResponse>(jsonString);
         }
     }
 }

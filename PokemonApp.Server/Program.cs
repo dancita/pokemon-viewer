@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PokemonApp.Server.Authorization;
+using PokemonApp.Server.Infrastructure;
+using PokemonApp.Server.Infrastructure.Mapping;
 using PokemonApp.Server.Interfaces;
 using PokemonApp.Server.Middleware;
 using PokemonApp.Server.Services;
@@ -44,6 +48,9 @@ builder.Services.AddAuthorizationBuilder()
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

@@ -1,14 +1,15 @@
-﻿using Newtonsoft.Json;
-
-namespace PokemonApp.Server.Models
+﻿namespace PokemonApp.Server.Models
 {
-    [Serializable]
     public class PokemonType
     {
-        [JsonProperty("slot")]
+        public int PokemonId { get; set; }
+
+        public int TypeId { get; set; }
+
         public int Slot { get; set; }
 
-        [JsonProperty("type")]
-        public NamedAPIResource? Type { get; set; }
+        public Pokemon Pokemon { get; set; } = null!;
+
+        public Type Type { get; set; } = null!;
     }
 }
