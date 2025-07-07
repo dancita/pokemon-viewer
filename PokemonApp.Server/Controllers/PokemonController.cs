@@ -13,14 +13,16 @@ namespace PokemonApp.Server.Controllers
     public class PokemonController : ControllerBase
     {
         private readonly IPokemonInfoService _pokemonInfoService;
+        private readonly IPokemonDbService _pokemonDbService;
 
-        public PokemonController(IPokemonInfoService pokemonInfoService)
+        public PokemonController(IPokemonInfoService pokemonInfoService, IPokemonDbService pokemonDbService)
         {
             _pokemonInfoService = pokemonInfoService;
+            _pokemonDbService = pokemonDbService;
         }
 
         /// <summary>
-        /// Retrieves details of a Pokemon
+        /// Retrieves details of a Pokemon and writes them to the db.
         /// </summary>
         /// <param name="identifier">Id or name</param>
         /// <returns>Returns Pokemon</returns>
@@ -38,6 +40,7 @@ namespace PokemonApp.Server.Controllers
             }
 
             var pokemon = await _pokemonInfoService.GetPokemonAsync(identifier);
+            await _pokemonDbService.SavePokemonAsync(pokemon);
 
             return Ok(pokemon);
         }

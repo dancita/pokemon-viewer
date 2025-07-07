@@ -4,13 +4,12 @@ using Type = PokemonApp.Server.Models.Type;
 
 namespace PokemonApp.Server.Infrastructure.Mapping
 {
-    public class PokemonMapper
+    public static class PokemonMapper
     {
-        public Pokemon MapPokemon(PokemonResponse response)
+        public static Pokemon MapPokemon(PokemonResponse response)
         {
             var pokemon = new Pokemon
             {
-                Id = response.Id,
                 Name = response.Name,
                 Height = response.Height,
                 Weight = response.Weight,

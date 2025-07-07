@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using PokemonApp.Server.Authorization;
 using PokemonApp.Server.Infrastructure;
-using PokemonApp.Server.Infrastructure.Mapping;
 using PokemonApp.Server.Interfaces;
 using PokemonApp.Server.Middleware;
 using PokemonApp.Server.Services;
@@ -17,6 +15,7 @@ var audience = auth0Settings["Audience"];
 // Add services to the container.
 builder.Services.AddHttpClient("httpClient");
 builder.Services.AddScoped<IPokemonInfoService, PokemonInfoService>();
+builder.Services.AddScoped<IPokemonDbService, PokemonDbService>();
 
 builder.Services.AddCors(options =>
 {
