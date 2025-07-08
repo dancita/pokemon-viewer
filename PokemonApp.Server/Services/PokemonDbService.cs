@@ -5,16 +5,19 @@ using PokemonApp.Server.Infrastructure.Mapping;
 using PokemonApp.Server.Interfaces;
 using PokemonApp.Server.Models;
 using PokemonApp.Server.Models.PokemonResponses;
+using System.Security.Claims;
 
 namespace PokemonApp.Server.Services
 {
     public class PokemonDbService : IPokemonDbService
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PokemonDbService(AppDbContext appDbContext)
+        public PokemonDbService(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
         {
             _appDbContext = appDbContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task SavePokemonAsync(PokemonResponse response)
@@ -32,7 +35,7 @@ namespace PokemonApp.Server.Services
             _appDbContext.PokemonRequest.Add(new PokemonRequest
             {
                 PokemonId = response.Id,
-                CreatedBy = "" //TODO get the user id
+                CreatedBy = GetUserId()
             });
 
             await _appDbContext.SaveChangesAsync(); //TODO add try catch
@@ -44,6 +47,11 @@ namespace PokemonApp.Server.Services
                 .Include(p => p.Types)
                 .Include(p => p.Abilities)
                 .FirstOrDefaultAsync(p => p.Id == pokemonId);
+        }
+
+        private string? GetUserId()
+        {
+            return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
         private async Task<Pokemon> AddAbilities(Pokemon pokemon, List<PokemonAbilityResponse> abilityResponses)
