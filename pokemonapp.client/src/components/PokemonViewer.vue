@@ -22,44 +22,45 @@
 
     <div v-if="post" class="content">
       <table>
-        <thead>
+        <tbody>
           <tr>
             <th>Name</th>
-            <th>Height</th>
-            <th>Weight</th>
-            <th>Types</th>
-            <th>Abilities</th>
-            <th>Image</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="post">
             <td>{{ post.name }}</td>
+          </tr>
+          <tr>
+            <th>Image</th>
+            <td>
+              <img :src="post?.sprites?.frontDefaultImage" alt="Pokemon image" />
+            </td>
+          </tr>
+          <tr>
+            <th>Height</th>
             <td>{{ formatHeight(post.height) }} m</td>
+          </tr>
+          <tr>
+            <th>Weight</th>
             <td>{{ formatWeight(post.weight) }} kg</td>
+          </tr>
+          <tr>
+            <th>Types</th>
             <td>
               <div v-for="t in post.types" :key="t.slot" class="type-pill">
-                <strong>Slot:</strong> {{ t.slot }} <br />
-                <strong>Name:</strong> {{ t.type.name }} <br />
-                <a :href="t.type.url" target="_blank" rel="noopener noreferrer">
-                  Url
-                </a>
+                <strong>Slot:</strong> {{ t.slot }}<br />
+                <strong>Name:</strong> {{ t.type.name }}<br />
+                <a :href="t.type.url" target="_blank" rel="noopener noreferrer">Url</a>
                 <hr />
               </div>
             </td>
+          </tr>
+          <tr>
+            <th>Abilities</th>
             <td>
               <div v-for="t in post.abilities" :key="t.slot" class="type-pill">
-                <strong>IsHidden: </strong> {{ t.is_hidden ? 'Yes' : 'No' }} <br />
-                <strong>Slot: </strong> {{ t.slot }} <br />
-                <strong>Ability: </strong> {{ t.ability.name }} <br />
-                <a :href="t.ability.url" target="_blank" rel="noopener noreferrer">
-                  Url
-                </a>
-              </div>
-            </td>
-            <td>
-              <div>
-                <img :src="post?.sprites?.frontDefaultImage" />
+                <strong>IsHidden:</strong> {{ t.is_hidden ? 'Yes' : 'No' }}<br />
+                <strong>Slot:</strong> {{ t.slot }}<br />
+                <strong>Ability:</strong> {{ t.ability.name }}<br />
+                <a :href="t.ability.url" target="_blank" rel="noopener noreferrer">Url</a>
+                <hr />
               </div>
             </td>
           </tr>
@@ -73,7 +74,6 @@
   import { defineComponent } from 'vue';
   import LogoutButton from './LogoutButton.vue';
   import { useAuth0 } from '@auth0/auth0-vue';
-  import { inject } from 'vue'
 
   const apiUrl = import.meta.env.VITE_API_BASE_POKEMON_URL;
 
@@ -103,7 +103,6 @@
         this.loading = true;
         
         try {
-            const auth0 = useAuth0();
 
             if (!this.auth0.isAuthenticated) {
               this.error = 'User not authenticated'
