@@ -12,9 +12,11 @@ namespace PokemonApp.Server.Models.PokemonResponses
         [JsonProperty("name")]
         public string? Name { get; set; }
 
+        //Height is in decimeters - 1 decimeter = 0.1 meter
         [JsonProperty("height")]
         public int Height { get; set; }
 
+        //Weight in hectograms - 1 hectogram = 0.1 kilogram
         [JsonProperty("weight")]
         public int Weight { get; set; }
 

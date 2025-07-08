@@ -35,8 +35,8 @@
         <tbody>
           <tr v-if="post">
             <td>{{ post.name }}</td>
-            <td>{{ post.height }}</td>
-            <td>{{ post.weight }}</td>
+            <td>{{ formatHeight(post.height) }} m</td>
+            <td>{{ formatWeight(post.weight) }} kg</td>
             <td>
               <div v-for="t in post.types" :key="t.slot" class="type-pill">
                 <strong>Slot:</strong> {{ t.slot }} <br />
@@ -150,6 +150,16 @@
         }}
         this.errorMessage = "";
         this.fetchData();        
+      },
+      formatWeight(hectograms) {
+        return this.formatValue(hectograms, 0.1);
+      },
+      formatHeight(decimeters) {
+        return this.formatValue(decimeters, 0.1);
+      },
+      formatValue(value, multiplier) {
+        var result = value * multiplier;
+        return Number.isInteger(result) ? result : result.toFixed(1);
       }
     },
   });
