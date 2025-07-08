@@ -1,6 +1,6 @@
-﻿using PokemonApp.Server.Models;
+﻿using PokemonApp.Server.Extensions;
+using PokemonApp.Server.Models;
 using PokemonApp.Server.Models.PokemonResponses;
-using Type = PokemonApp.Server.Models.Type;
 
 namespace PokemonApp.Server.Infrastructure.Mapping
 {
@@ -20,31 +20,13 @@ namespace PokemonApp.Server.Infrastructure.Mapping
             {
                 foreach (var typeDto in response.Types)
                 {
+                    var typeId = PokemonMapperExtensions.ExtractIdFromUrl(typeDto?.Type?.Url);
+
                     pokemon.Types.Add(new PokemonType
                     {
-                        Slot = typeDto.Slot,
-                        Type = new Type
-                        {
-                            Name = typeDto?.Type?.Name,
-                            Url = typeDto?.Type?.Url
-                        }
-                    });
-                }
-            }
-
-            if (response.Abilities != null)
-            {
-                foreach (var abilityDto in response.Abilities)
-                {
-                    pokemon.Abilities.Add(new PokemonAbility
-                    {
-                        Slot = abilityDto.Slot,
-                        IsHidden = abilityDto.IsHidden,
-                        Ability = new Ability
-                        {
-                            Name = abilityDto?.Ability.Name,
-                            Url = abilityDto?.Ability.Url
-                        }
+                        PokemonId = response.Id,
+                        TypeId = typeId,
+                        Slot = typeDto.Slot
                     });
                 }
             }

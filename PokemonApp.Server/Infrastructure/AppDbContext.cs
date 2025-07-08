@@ -21,6 +21,8 @@ namespace PokemonApp.Server.Infrastructure
 
         public DbSet<PokemonAbility> PokemonAbilities { get; set; } 
 
+        public DbSet<PokemonRequest> PokemonRequest { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -50,12 +52,14 @@ namespace PokemonApp.Server.Infrastructure
             modelBuilder.Entity<PokemonType>()
                 .HasOne(pt => pt.Pokemon)
                 .WithMany(p => p.Types)
-                .HasForeignKey(pt => pt.PokemonId);
+                .HasForeignKey(pt => pt.PokemonId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PokemonType>()
                 .HasOne(pt => pt.Type)
                 .WithMany(t => t.PokemonTypes)
-                .HasForeignKey(pt => pt.TypeId);
+                .HasForeignKey(pt => pt.TypeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PokemonAbility>()
                 .HasKey(pa => new { pa.PokemonId, pa.AbilityId });
@@ -63,12 +67,14 @@ namespace PokemonApp.Server.Infrastructure
             modelBuilder.Entity<PokemonAbility>()
                 .HasOne(pa => pa.Pokemon)
                 .WithMany(p => p.Abilities)
-                .HasForeignKey(pa => pa.PokemonId);
+                .HasForeignKey(pa => pa.PokemonId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PokemonAbility>()
                 .HasOne(pa => pa.Ability)
                 .WithMany(a => a.PokemonAbilities)
-                .HasForeignKey(pa => pa.AbilityId);
+                .HasForeignKey(pa => pa.AbilityId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Type>(entity =>
             {
@@ -98,6 +104,17 @@ namespace PokemonApp.Server.Infrastructure
                     new Type { Id = 17, Name = "Dark", Url = "https://pokeapi.co/api/v2/type/17/" },
                     new Type { Id = 18, Name = "Fairy", Url = "https://pokeapi.co/api/v2/type/18/" }
                 );
+            });
+
+            modelBuilder.Entity<PokemonRequest>(entity =>
+            {
+                entity.HasKey(pr => pr.Id);
+
+                entity.Property(pr => pr.CreatedBy)
+                      .HasMaxLength(255);
+
+                entity.Property(pr => pr.CreationDate)
+                      .IsRequired();
             });
         }
     }
