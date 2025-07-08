@@ -32,6 +32,7 @@ namespace PokemonApp.Server.Services
                 throw new PokemonInfoException(httpResponseMessage.StatusCode);
             }
             var jsonString = await httpResponseMessage.Content.ReadAsStringAsync();
+
             return JsonConvert.DeserializeObject<PokemonResponse>(jsonString);
         }
     }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PokemonApp.Server.Exceptions;
 using PokemonApp.Server.Extensions;
 using PokemonApp.Server.Infrastructure;
 using PokemonApp.Server.Infrastructure.Mapping;
 using PokemonApp.Server.Interfaces;
 using PokemonApp.Server.Models;
 using PokemonApp.Server.Models.PokemonResponses;
+using System.Net;
 using System.Security.Claims;
 
 namespace PokemonApp.Server.Services
@@ -38,7 +40,15 @@ namespace PokemonApp.Server.Services
                 CreatedBy = GetUserId()
             });
 
-            await _appDbContext.SaveChangesAsync(); //TODO add try catch
+            try
+            {
+                await _appDbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new PokemonInfoException(HttpStatusCode.InternalServerError, ex.Message);
+            }
+            
         }
 
         private async Task<Pokemon?> GetStoredPokemon(int pokemonId)
