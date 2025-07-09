@@ -1,5 +1,14 @@
 {
   "dependencies": {
     "@auth0/auth0-vue": "^2.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^26.1.0",
+    "vitest": "^3.2.4"
+  },
+  "scripts": {
+    "test": "vitest"
   }
 }
