@@ -1,6 +1,5 @@
 <template>
   <div class="pokemon-component">
-    <LogoutButton />
     <h1>Pokemon Viewer</h1>
     <div class="input-with-tooltip">
       <input id="pokemonQuery" name="pokemonQuery" v-model="inputText" type="text" placeholder="Enter a name or id" />
@@ -22,7 +21,6 @@
 
 <script lang="js">
   import { defineComponent } from 'vue';
-  import LogoutButton from './LogoutButton.vue';
   import InfoToolTip from './InfoToolTip.vue';
   import PokemonDetailsTable from './PokemonDetailsTable.vue';
   import { useAuth0 } from '@auth0/auth0-vue';
@@ -31,7 +29,6 @@
 
   export default defineComponent({
     components: {
-      LogoutButton,
       InfoToolTip,
       PokemonDetailsTable
     },
@@ -57,7 +54,6 @@
         this.loading = true;
         
         try {
-
             if (!this.auth0.isAuthenticated) {
               this.error = 'User not authenticated'
               return
@@ -118,6 +114,7 @@
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease;
+    margin-bottom: 30px;
   }
 
   input {

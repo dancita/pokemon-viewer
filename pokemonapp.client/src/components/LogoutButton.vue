@@ -28,7 +28,7 @@ const handleLogout = () => {
     cursor: pointer;
   }
 
-    .logout-button:hover {
-      background-color: #d32f2f;
-    }
+  .logout-button:hover {
+    background-color: #d32f2f;
+  }
 </style>

@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <th>Name</th>
-          <td>{{ post.name }}</td>
+          <td>{{ capitalize(post.name) }}</td>
         </tr>
         <tr>
           <th>Image</th>
@@ -34,13 +34,15 @@
         <tr>
           <th>Abilities</th>
           <td>
-            <div v-for="t in post.abilities" :key="t.slot" class="type-pill">
-              <strong>IsHidden:</strong> {{ t.is_hidden ? 'Yes' : 'No' }}<br />
-              <strong>Slot:</strong> {{ t.slot }}<br />
-              <strong>Ability:</strong> {{ t.ability.name }}<br />
-              <a :href="t.ability.url" target="_blank" rel="noopener noreferrer">Url</a>
-              <hr />
-            </div>
+            <div class="abilities-list">
+              <div v-for="t in post.abilities" :key="t.slot" class="type-pill">
+                <strong>IsHidden:</strong> {{ t.is_hidden ? 'Yes' : 'No' }}<br />
+                <strong>Slot:</strong> {{ t.slot }}<br />
+                <strong>Ability:</strong> {{ t.ability.name }}<br />
+                <a :href="t.ability.url" target="_blank" rel="noopener noreferrer">Url</a>
+                <hr />
+              </div>
+              </div>
           </td>
         </tr>
       </tbody>
@@ -57,12 +59,17 @@ function formatValue(value, multiplier) {
   return Number.isInteger(result) ? result : result.toFixed(1);
 }
 
-  function formatHeight(decimeters) {
-    return formatValue(decimeters, 0.1);
+function formatHeight(decimeters) {
+  return formatValue(decimeters, 0.1);
 }
 
-  function formatWeight(hectograms) {
-    return formatValue(hectograms, 0.1);
+function formatWeight(hectograms) {
+  return formatValue(hectograms, 0.1);
+}
+
+function capitalize(name) {
+  if (!name) return '';
+  return name.charAt(0).toUpperCase() + name.slice(1);
 }
 </script>
 
@@ -85,5 +92,11 @@ function formatValue(value, multiplier) {
     display: inline-block;
     background-color: #e0e0e0;
     color: #333;
+  }
+
+  .abilities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 </style>
