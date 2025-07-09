@@ -28,7 +28,7 @@
     border-radius: 4px;
     padding: 0.5rem;
     position: absolute;
-    bottom: 125%; /* position above the icon */
+    bottom: 125%;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -38,7 +38,6 @@
     font-size: small;
   }
 
-  /* Show tooltip on hover or focus */
   .info-icon:hover .tooltip-text,
   .info-icon:focus .tooltip-text {
     visibility: visible;
