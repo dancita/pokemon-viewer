@@ -110,11 +110,11 @@ describe('PokemonViewer.vue', () => {
   });
 
   it('shows PokemonDetailsTable on successful fetchData', async () => {
-    const mockPostData = { name: 'Pikachu', id: 25 };
+    const mockPokemonData = { name: 'Pikachu', id: 25 };
 
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
-      json: async () => mockPostData,
+      json: async () => mockPokemonData,
     });
 
     const wrapper = mount(PokemonViewer, {
@@ -132,7 +132,7 @@ describe('PokemonViewer.vue', () => {
 
     await new Promise(resolve => setTimeout(resolve, 0));
 
-    expect(wrapper.vm.post).toEqual(mockPostData);
+    expect(wrapper.vm.pokemon).toEqual(mockPokemonData);
 
     const table = wrapper.findComponent({ name: 'PokemonDetailsTable' });
     expect(table.exists()).toBe(true);

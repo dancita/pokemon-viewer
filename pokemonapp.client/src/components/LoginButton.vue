@@ -1,7 +1,7 @@
 <template>
-    <button @click="login">
-      Login
-    </button>
+  <button @click="login">
+    Login
+  </button>
 </template>
 
 <script setup>
@@ -17,14 +17,14 @@
 </script>
 
 <style scoped>
-  button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
 </style>

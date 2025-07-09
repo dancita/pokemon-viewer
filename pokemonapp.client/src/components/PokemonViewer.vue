@@ -15,7 +15,7 @@
     <div v-if="loading" class="loading">
       Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationvue">https://aka.ms/jspsintegrationvue</a> for more details.
     </div>
-    <PokemonDetailsTable v-if="post" :post="post" />
+    <PokemonDetailsTable v-if="pokemon" :pokemon="pokemon" />
   </div>
 </template>
 
@@ -31,14 +31,14 @@
   const inputText = ref('');
   const errorMessage = ref('');
   const loading = ref(false);
-  const post = ref(null);
-
+  const pokemon = ref(null);
+  const inputMaxLength = 12;
 
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const route = useRoute();
 
   const fetchData = async () => {
-    post.value = null;
+    pokemon.value = null;
     loading.value = true;
 
     try {
@@ -65,7 +65,7 @@
         return;
       }
 
-      post.value = await response.json();
+      pokemon.value = await response.json();
     }
     catch (error) {
       errorMessage.value = "A network error occurred. Please try again.";
@@ -77,7 +77,6 @@
 
     const handleClick = () => {
       const validInput = /^[A-Za-z0-9]+$/.test(inputText.value);
-      const maxLength = 12;
       if (!inputText.value.trim()) {
         errorMessage.value = "Field cannot be empty.";
         return;
@@ -86,8 +85,8 @@
         errorMessage.value = "Only numbers and letters allowed."
         return;
       }
-      if (inputText.value.length > maxLength) {
-        errorMessage.value = "Maximum 12 characters are allowed."
+      if (inputText.value.length > inputMaxLength) {
+        errorMessage.value = `Maximum ${inputMaxLength} characters are allowed.`
         return;
       }
       errorMessage.value = "";
@@ -96,50 +95,50 @@
 </script>
 
 <style scoped>
-  button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    margin-bottom: 30px;
-  }
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-bottom: 30px;
+}
 
-  input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 250px;
-    transition: border-color 0.3s ease;
-  }
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 250px;
+  transition: border-color 0.3s ease;
+}
 
-  input:focus {
-    border-color: #4CAF50;
-    outline: none;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-  }
+input:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
 
-  .error-message {
-    color: red;
-    font-weight: bold;
-    margin-top: 10px;
-  }
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
 
-  .pokemon-component {
-    text-align: center;
-  }
+.pokemon-component {
+  text-align: center;
+}
 
-  .input-with-tooltip {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: nowrap;
-    justify-content: center;
-    margin-bottom: 1rem;
-    position: relative;
-  }
+.input-with-tooltip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  justify-content: center;
+  margin-bottom: 1rem;
+  position: relative;
+}
 </style>

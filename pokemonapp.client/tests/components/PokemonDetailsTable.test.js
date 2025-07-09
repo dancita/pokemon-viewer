@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import PokemonDetailsTable from '../../src/components/PokemonDetailsTable.vue'
 
 describe('PokemonDetailsTable', () => {
-  const mockPost = {
+  const mockPokemon = {
     name: 'pikachu',
     height: 4,
     weight: 60,
@@ -32,7 +32,7 @@ describe('PokemonDetailsTable', () => {
 
   it('renders name, image, height, and weight correctly', () => {
     const wrapper = mount(PokemonDetailsTable, {
-      props: { post: mockPost }
+      props: { pokemon: mockPokemon }
     })
 
     expect(wrapper.text()).toContain('Name')
@@ -44,12 +44,12 @@ describe('PokemonDetailsTable', () => {
 
     const img = wrapper.find('img')
     expect(img.exists()).toBe(true)
-    expect(img.attributes('src')).toBe(mockPost.sprites.frontDefaultImage)
+    expect(img.attributes('src')).toBe(mockPokemon.sprites.frontDefaultImage)
   })
 
   it('renders types correctly', () => {
     const wrapper = mount(PokemonDetailsTable, {
-      props: { post: mockPost }
+      props: { pokemon: mockPokemon }
     })
 
     expect(wrapper.text()).toContain('Slot: 1')
@@ -58,7 +58,7 @@ describe('PokemonDetailsTable', () => {
 
   it('renders abilities correctly', () => {
     const wrapper = mount(PokemonDetailsTable, {
-      props: { post: mockPost }
+      props: { pokemon: mockPokemon }
     })
 
     expect(wrapper.text()).toContain('IsHidden: No')
