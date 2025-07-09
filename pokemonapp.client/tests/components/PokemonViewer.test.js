@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import PokemonViewer from '../src/components/PokemonViewer.vue';
+import PokemonViewer from '../../src/components/PokemonViewer.vue';
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({ fullPath: '/' }),
