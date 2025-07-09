@@ -25,7 +25,7 @@ namespace PokemonApp.Server.Services
             client.BaseAddress = new Uri(url);
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage httpResponseMessage = await client.GetAsync(url).ConfigureAwait(false);
+            var httpResponseMessage = await client.GetAsync(url).ConfigureAwait(false);
                 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
@@ -33,7 +33,8 @@ namespace PokemonApp.Server.Services
             }
             var jsonString = await httpResponseMessage.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<PokemonResponse>(jsonString);
+            return JsonConvert.DeserializeObject<PokemonResponse>(jsonString)
+                ?? throw new JsonException("Failed to deserialize PokemonResponse.");
         }
     }
 }

@@ -13,7 +13,8 @@ namespace PokemonApp.Server.Infrastructure.Mapping
                 Name = response.Name,
                 Height = response.Height,
                 Weight = response.Weight,
-                FrontDefaultImage = response.Sprites?.FrontDefaultImage
+                FrontDefaultImage = response.Sprites?.FrontDefaultImage,
+                PokemonApiId = response.Id
             };
 
             if (response.Types != null)
@@ -24,7 +25,7 @@ namespace PokemonApp.Server.Infrastructure.Mapping
 
                     pokemon.Types.Add(new PokemonType
                     {
-                        PokemonId = response.Id,
+                        Pokemon = pokemon,
                         TypeId = typeId,
                         Slot = typeDto.Slot
                     });

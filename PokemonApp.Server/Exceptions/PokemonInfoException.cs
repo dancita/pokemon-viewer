@@ -4,12 +4,9 @@ namespace PokemonApp.Server.Exceptions
 {
     public class PokemonInfoException : HttpRequestException
     {
-        public HttpStatusCode StatusCode { get; }
-
         public PokemonInfoException(HttpStatusCode statusCode, string? message = null)
-            : base(message)
+            : base(message, null, statusCode)
         {
-            StatusCode = statusCode;
         }
     }
 }

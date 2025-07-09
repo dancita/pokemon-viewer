@@ -24,19 +24,19 @@ namespace PokemonApp.Server.Services
 
         public async Task SavePokemonAsync(PokemonResponse response)
         {
-            var pokemonExists = await PokemonExistsInDb(response.Id);
+            var pokemonExists = await GetStoredPokemonAsync(response.Id);
 
             if (!pokemonExists)
             {
                 var pokemon = PokemonMapper.MapPokemon(response);
-                pokemon = await AddAbilities(pokemon, response.Abilities);
+                pokemon = await AddAbilitiesAsync(pokemon, response.Abilities);
 
                 _appDbContext.Pokemon.Add(pokemon);
             }
 
             _appDbContext.PokemonRequest.Add(new PokemonRequest
             {
-                PokemonId = response.Id,
+                PokemonApiId = response.Id,
                 CreatedBy = GetUserId()
             });
 
@@ -47,16 +47,12 @@ namespace PokemonApp.Server.Services
             catch (Exception ex)
             {
                 throw new PokemonInfoException(HttpStatusCode.InternalServerError, ex.Message);
-            }
-            
+            }          
         }
 
-        private async Task<Pokemon?> GetStoredPokemon(int pokemonId)
+        private async Task<bool> GetStoredPokemonAsync(int pokemonApiId)
         {
-            return await _appDbContext.Pokemon
-                .Include(p => p.Types)
-                .Include(p => p.Abilities)
-                .FirstOrDefaultAsync(p => p.Id == pokemonId);
+            return await _appDbContext.Pokemon.AnyAsync(p => p.PokemonApiId == pokemonApiId);
         }
 
         private string? GetUserId()
@@ -64,11 +60,10 @@ namespace PokemonApp.Server.Services
             return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
-        private async Task<Pokemon> AddAbilities(Pokemon pokemon, List<PokemonAbilityResponse> abilityResponses)
+        private async Task<Pokemon> AddAbilitiesAsync(Pokemon pokemon, List<PokemonAbilityResponse> abilityResponses)
         {
             if (abilityResponses != null)
-            {
-                
+            {               
                 foreach (var abilityResponse in abilityResponses)
                 {
                     var abilityId = PokemonMapperExtensions.ExtractIdFromUrl(abilityResponse?.Ability?.Url);
@@ -96,11 +91,6 @@ namespace PokemonApp.Server.Services
             }
 
             return pokemon;
-        }
-
-        private async Task<bool> PokemonExistsInDb(int pokemonId)
-        {
-            return await GetStoredPokemon(pokemonId) != null;
         }
     }
 }

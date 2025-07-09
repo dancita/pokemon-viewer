@@ -2,8 +2,10 @@
 {
     public class Pokemon
     {
-        //PokeApi ID
+        //Local database Id
         public int Id { get; set; }
+
+        public int PokemonApiId { get; set; }
 
         public string? Name { get; set; }
 

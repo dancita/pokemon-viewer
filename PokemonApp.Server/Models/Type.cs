@@ -1,6 +1,4 @@
-﻿using PokemonApp.Server.Models.PokemonResponses;
-
-namespace PokemonApp.Server.Models
+﻿namespace PokemonApp.Server.Models
 {
     public class Type : BaseAPIEntity
     {
