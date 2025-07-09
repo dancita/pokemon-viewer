@@ -8,7 +8,7 @@
         simply replace it with a hyphen. For example, you can find "Mr.Mime" by searching for "mr-mime".
       </InfoToolTip>
     </div>
-    <button @click="handleClick">Submit</button>
+    <button data-testid="submit-button" @click="handleClick">Submit</button>
     <div v-if="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
@@ -19,89 +19,80 @@
   </div>
 </template>
 
-<script lang="js">
-  import { defineComponent } from 'vue';
+<script setup>
+  import { ref, watch, onMounted } from 'vue';
   import InfoToolTip from './InfoToolTip.vue';
   import PokemonDetailsTable from './PokemonDetailsTable.vue';
   import { useAuth0 } from '@auth0/auth0-vue';
+  import { useRoute } from 'vue-router';
 
   const apiUrl = import.meta.env.VITE_API_BASE_POKEMON_URL;
 
-  export default defineComponent({
-    components: {
-      InfoToolTip,
-      PokemonDetailsTable
-    },
-    data() {
-      return {
-        loading: false,
-        post: null,
-        inputText: '',
-        errorMessage: ''
+  const inputText = ref('');
+  const errorMessage = ref('');
+  const loading = ref(false);
+  const post = ref(null);
+
+
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const route = useRoute();
+
+  const fetchData = async () => {
+    post.value = null;
+    loading.value = true;
+
+    try {
+      if (!isAuthenticated.value) {
+        errorMessage.value = 'User not authenticated'
+        return
       }
-    },
-    setup(){
-      const auth0 = useAuth0()
-      return { auth0 }
-    },
-    watch: {
-      // call again the method if the route changes
-      '$route': 'fetchData'
-    },
-    methods: {
-      async fetchData() {
-        this.post = null;
-        this.loading = true;
-        
-        try {
-            if (!this.auth0.isAuthenticated) {
-              this.error = 'User not authenticated'
-              return
-            }
 
-            const token = await this.auth0.getAccessTokenSilently({
-              audience:`${apiUrl}`,
-              scope: 'read:pokemon',
-            })
+      const token = await getAccessTokenSilently({
+        audience: `${apiUrl}`,
+        scope: 'read:pokemon',
+      });
 
-            const response = await fetch(`${apiUrl}${this.inputText}`, {
-              headers: {
-                 Authorization: `Bearer ${token}`
-              }
-            });
+      const response = await fetch(`${apiUrl}${inputText.value}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
-          if (!response.ok) {
-            const { message } = await response.json();
-            
-            this.errorMessage = message || "An unknown error occurred.";
-            return;
-          }
+      if (!response.ok) {
+        const { message } = await response.json();
 
-          this.post = await response.json();
-        }
-        catch (error) {
-          this.errorMessage = "A network error occurred. Please try again.";
-        }
-        finally {
-          this.loading = false;
-        }
-      },
-      handleClick() {
-        var validInput = /^[A-Za-z0-9]+$/.test(this.inputText);
-        const maxLength = 12;
-        if (!validInput){
-          this.errorMessage = "Only numbers and letters allowed."
-          return;
-        }
-        if (this.inputText.length > maxLength) {{
-          this.errorMessage = "Maximum 12 characters are allowed."
-          return;
-        }}
-        this.errorMessage = "";
-        this.fetchData();        
+        errorMessage.value = message || "An unknown error occurred.";
+        return;
       }
-    },
-  });
+
+      post.value = await response.json();
+    }
+    catch (error) {
+      errorMessage.value = "A network error occurred. Please try again.";
+    }
+    finally {
+      loading.value = false;
+    }
+  };
+
+    const handleClick = () => {
+      const validInput = /^[A-Za-z0-9]+$/.test(inputText.value);
+      const maxLength = 12;
+      if (!inputText.value.trim()) {
+        errorMessage.value = "Field cannot be empty.";
+        return;
+      }
+      if (!validInput) {
+        errorMessage.value = "Only numbers and letters allowed."
+        return;
+      }
+      if (inputText.value.length > maxLength) {
+        errorMessage.value = "Maximum 12 characters are allowed."
+        return;
+      }
+      errorMessage.value = "";
+      fetchData();
+  };
 </script>
 
 <style scoped>

@@ -1,8 +1,9 @@
-import './assets/main.css'
+import './assets/main.css';
 
-import { createApp } from 'vue'
-import { createAuth0 } from '@auth0/auth0-vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import { createAuth0 } from '@auth0/auth0-vue';
+import App from './App.vue';
+import router from './router';
 
 const app = createApp(App);
 const apiUrl = import.meta.env.VITE_API_BASE_POKEMON_URL;
@@ -19,4 +20,5 @@ app.use(
   })
 );
 
-app.mount('#app')
+app.use(router)
+  .mount('#app')
