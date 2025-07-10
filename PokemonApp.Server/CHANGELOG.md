@@ -1,8 +1,29 @@
-This file explains how Visual Studio created the project.
+# Changelog
 
-The following steps were used to generate this project:
-- Create new ASP\.NET Core Web API project.
-- Update project file to add a reference to the frontend project and set SPA properties.
-- Update `launchSettings.json` to register the SPA proxy as a startup assembly.
-- Add project to the startup projects list.
-- Write this file.
+All notable backend changes to this project are documented in this file.
+
+The format follows [Keep a Changelog](https://keepachangelog.com)  
+and adheres to [Semantic Versioning](https://semver.org).
+
+---
+
+## [1.0.0] - 2025-07-10
+
+### Added
+- Initial backend project setup with ASP.NET Core Web API.
+- Integrated Entity Framework Core with SQL Server.
+- Created Pokemon-related models.
+- Implemented logic for storing Pokémon abilities and related data.
+- Added input validation to API endpoints.
+- Configured JWT authentication for API Endpoints.
+- Added custom exception handling middleware.
+
+### Changed
+- Refactored service structure and dependency injection setup.
+- Extracted external URLs to `appsettings.json` for better config management.
+- Improved backend and model consistency with `PokemonApiId` support.
+- Changed startup and middleware configuration.
+
+### Fixed
+- Improved validation logic and error handling throughout the API
+- Added various refactorings, including changes to the database schema.
